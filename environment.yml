@@ -1,0 +1,22 @@
+name: contactpose_ml
+
+channels:
+  - pytorch
+  - open3d-admin
+
+dependencies:
+  - pytorch
+  - torchvision
+  - matplotlib
+  - ignite
+  - open3d
+  - scikit-learn
+  - tqdm
+  - pip
+  - ipython
+  - pip:
+      - visdom
+      - transforms3d
+      - hdbscan
+      - chumpy
+      - trimesh[easy]
