@@ -85,10 +85,10 @@ These links are provided only for reference, you should not need to download the
 
 ## Other Data
 
-- [object model voxelizations](https://www.dropbox.com/sh/zyy9jyo6pzat456/AABwO3cR6uVe0bKMXfXn55XQa?dl=0)
+- [object model voxelizations](https://www.dropbox.com/sh/zyy9jyo6pzat456/AABwO3cR6uVe0bKMXfXn55XQa?dl=1)
 - Pre-computed "prediction data":
-  - [simple-joints](https://www.dropbox.com/s/a6rydh8y0fl85d6/simple-joints_prediction_data.zip?dl=0)
-  - [relative-joints](https://www.dropbox.com/s/2y9h66mctofs1cj/relative-joints_prediction_data.zip?dl=0)
-  - [skeleton](https://www.dropbox.com/s/7xyrafply27efog/skeleton_prediction_data.zip?dl=0)
-  - [mesh](https://www.dropbox.com/s/fjfc81203u418pw/mesh_prediction_data.zip?dl=0)
-  - [images](https://www.dropbox.com/s/i6j0e9hxdadun9k/images_prediction_data.zip?dl=0)
+  - [simple-joints](https://www.dropbox.com/s/a6rydh8y0fl85d6/simple-joints_prediction_data.zip?dl=1)
+  - [relative-joints](https://www.dropbox.com/s/2y9h66mctofs1cj/relative-joints_prediction_data.zip?dl=1)
+  - [skeleton](https://www.dropbox.com/s/7xyrafply27efog/skeleton_prediction_data.zip?dl=1)
+  - [mesh](https://www.dropbox.com/s/fjfc81203u418pw/mesh_prediction_data.zip?dl=1)
+  - [images](https://www.dropbox.com/s/i6j0e9hxdadun9k/images_prediction_data.zip?dl=1)
