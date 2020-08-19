@@ -14,6 +14,7 @@ $ conda activate contactpose
 $ python scripts/download_data.py --type grasps
 ```
 This will download to `<API_CLONE_DIR>/data/contactpose_data`.
+
 3. Download the trained PyTorch models and necessary data:
 ```bash
 $ python get_data.py --contactpose_data_dir <API_CLONE_DIR>/data/contactpose_data 
