@@ -82,8 +82,12 @@ def unzip_and_del(filename, dst_dir=None, progress=True):
 
 
 if __name__ == '__main__':
+  import argparse
   import sys
-  import random
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--contactpose_data_dir', required=True)
+  args = parser.parse_args()
+
   model_urls = [
     "https://www.dropbox.com/sh/jszbnc5txyp1lny/AABKT8Z9DeHlgZyP7hRxilToa?dl=1",
     "https://www.dropbox.com/sh/x6wl7pbj64y3zxa/AAASD_pFlaUVtgD6_lLIO2lQa?dl=1",
@@ -97,6 +101,15 @@ if __name__ == '__main__':
   prediction_data_url = \
     "https://www.dropbox.com/s/7xyrafply27efog/skeleton_prediction_data.zip?dl=1"
 
+  #####################
+  # symlink ContactPose data dir
+  cp_dir = osp.expanduser(args.contactpose_data_dir)
+  if not osp.isdir(cp_dir):
+    print('{:s} does not exist, please follow step 2 of Getting Started and re-run')
+    sys.exit(-1)
+  os.symlink(cp_dir, osp.join('data', 'contactpose_data'))
+  print('Symlinked: {:s} -> data/contactpose_data'.format(cp_dir))
+
   ####################
   # Download trained models to data/checkpoints/<model_name>
   for url in model_urls:
@@ -109,7 +122,6 @@ if __name__ == '__main__':
     if not osp.isdir(dirname):
       os.mkdir(dirname)
     unzip_and_del(filename, dst_dir=dirname)
-    break
   
   ####################
   # Download object model voxelizations to data/binvoxes
