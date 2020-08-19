@@ -1,6 +1,6 @@
 # [ContactPose](https://contactpose.cc.gatech.edu)
 
-Code for the **data-driven hand-object contact modeling** experiments presented in the paper:
+[PyTorch](https://pytorch.org) implementation of the **data-driven hand-object contact modeling** experiments presented in the paper:
 
 [ContactPose: A Dataset of Grasps with Object Contact and Hand Pose]() - 
 
