@@ -24,6 +24,6 @@ split_overfit = {
   'test': {
     'include_sessions': [46],
     'include_instructions': ['use'],
-    'include_objects': ['wine_glass']
+    'include_objects': ['mug']
   }
 }

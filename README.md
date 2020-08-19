@@ -35,7 +35,11 @@ $ python eval.py --show_object \
 `--split` can be `objects` or `participants`,
 `--config` can be `data/mlp.ini`, `data/pointnet.ini`, or `data/voxnet.ini` according
 to the learner model architecture, and the `--checkpoint` will change accordingly.
+
 ![result.png](result.png)
+
+The script will dropout hand pose features according to `joint_droprate` defined
+in the config file.
 
 If you want to check the output for a specific grasp, change `include_sessions`,
 `include_instructions`, and `include_objects` of `split_overfit['test']` in 
@@ -48,7 +52,8 @@ $ ./eval_script.sh configs/pointnet.ini objects \
     data/pointnet_split_objects_skeleton/checkpoint_model_145_train_loss=1.359683.pth 0
 ```
 This produces pickle files named `predictions_*_runN.pkl` in the same directory
-as the checkpoint. They contain the raw softmax predictions.
+as the checkpoint. They contain the raw softmax predictions. N in [1, 3]. The
+3 runs can be used to average the effect of random hand pose feature dropout.
 - Run `process_predictions.sh data/checkpoints`. The `exp` variable in that 
 script corresponds to directory names in `data/checkpoints`, so modify that
 according to the names of the experiments you want to process predictions for.

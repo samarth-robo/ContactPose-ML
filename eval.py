@@ -21,7 +21,7 @@ import pickle
 osp = os.path
 
 
-def annealed_mean(pred, bins, T=0.2):
+def annealed_mean(pred, bins, T=0.1):
   pred = np.exp(np.log(pred) / T)
   pred /= pred.sum(axis=1, keepdims=True)
   texture_bin_centers = (bins[:-1] + bins[1:]) / 2.0
