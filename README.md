@@ -52,7 +52,7 @@ Pip wheels can unfortunately not be used because of the outdated version of PyTo
 These links are provided only for reference, you should not need to download them manually.
 `get_data.py` in each branch will download everything for you.
 
-## Trained Models
+## Trained Models, Training Logs, and `result.json` files
 
 | **Learner**         | **Features**    | **Split**   | **Link** |
 |---------------------|-----------------|-------------|------|
