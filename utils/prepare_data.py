@@ -184,7 +184,7 @@ def prepare_all_data(session_nums, config, binvoxes_dir,
       data_dir = osp.join(contactpose_data_dir, session_name)
       this_output_dir = osp.join(output_dir, session_name)
       if not osp.isdir(this_output_dir):
-        os.mkdir(this_output_dir)
+        os.makedirs(this_output_dir)
       for object_name in next(os.walk(data_dir))[1]:
         skip = object_name in exclude_objects
         for suffix in ['solid', 'hollow']:
