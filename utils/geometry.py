@@ -1,3 +1,4 @@
+import init_paths
 import numpy as np
 import transforms3d.quaternions as txq
 import logging
@@ -8,7 +9,6 @@ from open3d import visualization as o3dv
 from thirdparty import binvox_rw
 from copy import deepcopy
 import matplotlib.pyplot as plt
-from IPython.core.debugger import set_trace
 
 
 # Unit = meters
