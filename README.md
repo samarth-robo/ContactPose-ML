@@ -29,7 +29,7 @@ $ python eval.py --show_object \
     --config configs/pointnet.ini \
     --checkpoint data/pointnet_split_objects_skeleton/checkpoint_model_145_train_loss=1.359683.pth
 ```
-`--split` can be `objects` or `participants`,
+`--split` can be `objects`, `participants`, or `overfit`,
 `--config` can be `data/mlp.ini`, `data/pointnet.ini`, or `data/voxnet.ini` according
 to the learner model architecture, and the `--checkpoint` will change accordingly.
 
