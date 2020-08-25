@@ -68,7 +68,7 @@ def train(data_dir, contactpose_dir, split, config_file, experiment_suffix=None,
   # cuda
   device = 'cuda:{:s}'.format(device_id)
 
-  exp_name = '{:s}_split_{:s}'.format(model_name, split)
+  exp_name = '{:s}_split_{:s}_skeleton'.format(model_name, split)
   if experiment_suffix:
     exp_name += '_{:s}'.format(experiment_suffix)
   checkpoint_dir = osp.join(checkpoint_dir, exp_name)
