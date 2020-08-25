@@ -1,3 +1,4 @@
+import init_paths
 import numpy as np
 import os
 import logging
@@ -219,6 +220,8 @@ if __name__ == '__main__':
   from utils.misc import setup_logging
   import configparser
   log_filename = osp.split(sys.argv[0])[1].split('.')[0]
+  if not osp.isdir('logs'):
+    os.mkdir('logs')
   log_filename = osp.join('logs', '{:s}.txt'.format(log_filename))
   setup_logging(log_filename)
   

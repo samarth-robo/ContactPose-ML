@@ -20,9 +20,6 @@ This will download to `<API_CLONE_DIR>/data/contactpose_data`.
 $ python get_data.py --contactpose_data_dir <API_CLONE_DIR>/data/contactpose_data 
 ```
 
-## Demo
-Coming soon
-
 ## Inference
 For example, evaluate the PointNet++ model trained on the `objects` split,
 and show the result:
@@ -78,3 +75,8 @@ As before, you can change `--split` and `--config` to select your split/learner
 architecture combination. The script also has support for visualizing
 progress with `visdom`, logging to a txt file, and resuming optimization
 from a checkpoint.
+
+## Other Scripts
+- `utils/prepare_data.py`: Pre-processes data to be used for training
+(e.g. extract hand pose features). `get_data.py` already downloads the
+pre-processed data used in our experiments in `data/skeleton_prediction_data`.
