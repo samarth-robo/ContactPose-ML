@@ -7,7 +7,7 @@ from thirdparty import binvox_rw
 from copy import deepcopy
 import matplotlib.pyplot as plt
 import transforms3d.euler as txe
-from import_open3d import *
+from utils.import_open3d import *
 
 
 # Unit = meters
