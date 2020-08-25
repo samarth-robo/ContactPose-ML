@@ -1,3 +1,4 @@
+import init_paths
 import pickle
 import os
 import matplotlib.pyplot as plt
