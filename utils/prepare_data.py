@@ -202,17 +202,17 @@ def prepare_all_data(session_nums, config, binvoxes_dir,
                              this_data_dir, binvoxes_dir,
                              this_output_dir, debug_mode)
 
-  # this_output_dir = osp.join(output_dir, 'normals')
-  # if not osp.isdir(this_output_dir):
-  #   os.mkdir(this_output_dir)
-  # for object_name in all_object_names:
-  #   prepare_surface_normals(object_name, binvoxes_dir,
-  #                           models_dir, this_output_dir)
-  # this_output_dir = osp.join(output_dir, 'occupancy_grids')
-  # if not osp.isdir(this_output_dir):
-  #   os.mkdir(this_output_dir)
-  # for object_name in all_object_names:
-  #   prepare_occupancy_grids(object_name, config, binvoxes_dir, this_output_dir)
+  this_output_dir = osp.join(output_dir, 'normals')
+  if not osp.isdir(this_output_dir):
+    os.makedirs(this_output_dir)
+  for object_name in all_object_names:
+    prepare_surface_normals(object_name, binvoxes_dir,
+                            models_dir, this_output_dir)
+  this_output_dir = osp.join(output_dir, 'occupancy_grids')
+  if not osp.isdir(this_output_dir):
+    os.makedirs(this_output_dir)
+  for object_name in all_object_names:
+    prepare_occupancy_grids(object_name, config, binvoxes_dir, this_output_dir)
 
 
 if __name__ == '__main__':
