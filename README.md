@@ -86,6 +86,7 @@ These links are provided only for reference, you should not need to download the
 ## Other Data
 
 - [object model voxelizations](https://www.dropbox.com/sh/zyy9jyo6pzat456/AABwO3cR6uVe0bKMXfXn55XQa?dl=1)
+- [3D models of objects](https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1)
 - Pre-computed "prediction data":
   - [simple-joints](https://www.dropbox.com/s/a6rydh8y0fl85d6/simple-joints_prediction_data.zip?dl=1)
   - [relative-joints](https://www.dropbox.com/s/2y9h66mctofs1cj/relative-joints_prediction_data.zip?dl=1)
