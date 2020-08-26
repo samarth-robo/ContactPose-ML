@@ -98,6 +98,8 @@ if __name__ == '__main__':
     "https://www.dropbox.com/sh/zyy9jyo6pzat456/AABwO3cR6uVe0bKMXfXn55XQa?dl=1"
   prediction_data_url = \
     "https://www.dropbox.com/s/fjfc81203u418pw/mesh_prediction_data.zip?dl=1"
+  object_models_url = \
+    "https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1"
 
   #####################
   # symlink ContactPose data dir
@@ -120,6 +122,19 @@ if __name__ == '__main__':
     if not osp.isdir(dirname):
       os.mkdir(dirname)
     unzip_and_del(filename, dst_dir=dirname)
+  
+  ####################
+  # Download object 3D models to data/object_models
+  # models are common for all branches, so check if they have already been 
+  # downloaded
+  dirname = osp.join('data', 'object_models')
+  if not osp.isdir(dirname):
+    os.mkdir(dirname)
+    filename = download_url(object_models_url, dirname='data')
+    if filename is not None:
+      unzip_and_del(filename, dst_dir=dirname)
+  else:
+    print('object models have already been downloaded, skipping')
   
   ####################
   # Download object model voxelizations to data/binvoxes
