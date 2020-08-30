@@ -5,7 +5,8 @@ channels:
   - open3d-admin
 
 dependencies:
-  - pytorch
+  - python=3.7
+  - pytorch=1.2.0
   - torchvision
   - matplotlib
   - ignite
@@ -17,6 +18,4 @@ dependencies:
   - pip:
       - visdom
       - transforms3d
-      - hdbscan
       - chumpy
-      - trimesh[easy]
