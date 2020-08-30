@@ -34,7 +34,33 @@ def softmax(x):
   return np.exp(x) / sum(np.exp(x))
 
 
-def create_hand_geoms(joint_locs, color, kept_joints=None):
+def rotmat_from_vecs(v1, v2=np.asarray([0, 0, 1])):
+  """
+  Returns a rotation matrix R_1_2
+  :param v1: vector in frame 1
+  :param v2: vector in frame 2
+  :return:
+  """
+  v1 = v1 / np.linalg.norm(v1)
+  v2 = v2 / np.linalg.norm(v2)
+  v = np.cross(v2, v1)
+  vx = np.asarray([
+    [0,    -v[2], +v[1], 0],
+    [+v[2], 0,    -v[0], 0],
+    [-v[1], +v[0], 0,    0],
+    [0,     0,     0,    0]])
+  dotp = np.dot(v1, v2)
+
+  if np.abs(dotp + 1) < 1e-3:
+    R = np.eye(4)
+    x = np.cross(v2, [1, 0, 0])
+    R[:3, :3] = txe.axangle2mat(x, np.pi)
+  else:
+    R = np.eye(4) + vx + np.dot(vx, vx)/(1+dotp)
+  return R
+
+
+def create_hand_geoms_lines(joint_locs, color, kept_joints=None):
   geoms = []
   
   if kept_joints is None:
@@ -56,8 +82,42 @@ def create_hand_geoms(joint_locs, color, kept_joints=None):
   return geoms
 
 
+def create_hand_geoms(joint_locs, joint_color, lines_color=None,
+    kept_lines=None, joint_sphere_radius_mm=4.0, bone_cylinder_radius_mm=2.5):
+  if lines_color is None:
+    lines_color=np.asarray([224.0, 172.0, 105.0])/255
+  geoms = []
+  
+  for j in joint_locs:
+    m = o3dg.TriangleMesh.create_sphere(radius=joint_sphere_radius_mm*1e-3,
+        resolution=10)
+    m.compute_vertex_normals()
+    m.paint_uniform_color(joint_color)
+    m.translate(j)
+    geoms.append(m)
+
+  line_ids = get_hand_line_ids()
+  if kept_lines is None:
+    kept_lines = [True for _ in range(len(line_ids))]
+  for line_idx, (idx0, idx1) in enumerate(line_ids):
+    bone = joint_locs[idx0] - joint_locs[idx1]
+    h = np.linalg.norm(bone)
+    l = o3dg.TriangleMesh.create_cylinder(radius=bone_cylinder_radius_mm*1e-3,
+        height=h, resolution=10)
+    lc = lines_color if kept_lines[line_idx] else [0, 0, 0]
+    l.paint_uniform_color(lc)
+    l.compute_vertex_normals()
+    l.translate([0, 0, -h/2.0])
+    T = rotmat_from_vecs(bone, [0, 0, 1])
+    T[:3, 3] = joint_locs[idx0]
+    l.transform(T)
+    geoms.append(l)
+
+  return geoms
+
+
 def show_prediction(surface_colors, mesh, binvox, joint_locs,
-    kept_joints=[None, None], mesh_scale=1e-3):
+    kept_lines=[None, None], mesh_scale=1e-3):
   if not isinstance(mesh, o3dg.TriangleMesh):
     mesh = o3dio.read_triangle_mesh(mesh)
     mesh.scale(mesh_scale, center=False)
@@ -69,15 +129,12 @@ def show_prediction(surface_colors, mesh, binvox, joint_locs,
   pc = create_pc(pc, surface_colors)
   # draw_geometries_with_colormap([pc], apply_sigmoid=False)
   mesh = transfer_color_pc2mesh(pc, mesh)
-  geoms = [mesh]
+  geoms = [apply_colormap(mesh, apply_sigmoid=False)]
   hand_colors = [[0, 1, 0], [1, 0, 0]]
-  assert(len(joint_locs) == 2)
-  for hand_idx, hand in enumerate(joint_locs):
-    if abs(np.max(hand)) < 1e-3:
-      continue
-    geoms.extend(create_hand_geoms(hand, hand_colors[hand_idx],
-      kept_joints[hand_idx]))
-  draw_geometries_with_colormap(geoms, apply_sigmoid=False)
+  for hand_idx, hand in joint_locs.items():
+    geoms.extend(create_hand_geoms(hand, joint_color=hand_colors[hand_idx],
+      kept_lines=kept_lines[hand_idx]))
+  o3dv.draw_geometries(geoms)
 
 
 def get_hand_line_ids():
@@ -111,28 +168,29 @@ def texture_proc(colors, a=0.05, invert=False):
   return colors
 
 
-def draw_geometries_with_colormap(geoms, apply_sigmoid=True):
-  logger = logging.getLogger('__name__')
+def apply_colormap(geom, apply_sigmoid=True):
+  if isinstance(geom, o3dg.PointCloud):
+    colors = np.asarray(geom.colors)[:, 0]
+  elif isinstance(geom, o3dg.TriangleMesh):
+    colors = np.asarray(geom.vertex_colors)[:, 0]
+  else:
+    raise NotImplementedError
+  if apply_sigmoid:
+    colors = texture_proc(colors)
+  colors = plt.cm.inferno(colors)[:, :3]
+  colors = o3du.Vector3dVector(colors)
+  if isinstance(geom, o3dg.PointCloud):
+    geom.colors = colors
+  elif isinstance(geom, o3dg.TriangleMesh):
+    geom.vertex_colors = colors
+  return geom
 
+
+def draw_geometries_with_colormap(geoms, apply_sigmoid=True):
   draw_geoms = []
   for geom in geoms:
     geom = deepcopy(geom)
-    if isinstance(geom, o3dg.PointCloud):
-      colors = np.asarray(geom.colors)[:, 0]
-    elif isinstance(geom, o3dg.TriangleMesh):
-      colors = np.asarray(geom.vertex_colors)[:, 0]
-    else:
-      logger.error('unknown geometry type')
-      return
-    if apply_sigmoid:
-      colors = texture_proc(colors)
-    colors = plt.cm.inferno(colors)[:, :3]
-    colors = o3du.Vector3dVector(colors)
-    if isinstance(geom, o3dg.PointCloud):
-      geom.colors = colors
-    elif isinstance(geom, o3dg.TriangleMesh):
-      geom.vertex_colors = colors
-    draw_geoms.append(geom)
+    draw_geoms.append(apply_colormap(geom, apply_sigmoid))
   o3dv.draw_geometries(draw_geoms)
 
 
