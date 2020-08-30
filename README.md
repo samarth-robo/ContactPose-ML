@@ -42,10 +42,10 @@ You will probably be able to use later versions, but no guarantees. Please creat
 - Install `pytorch-geometric` [from source code](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html#installation-from-source).
 Pip wheels can unfortunately not be used because of the outdated version of PyTorch.
 - Checkout the appropriate branch for the features used to predict contact:
-  - [simple-joints](https://github.com/samarth-robo/ContactPose-ML/tree/simple-joints)
-  - [relative-joints](https://github.com/samarth-robo/ContactPose-ML/tree/relative-joints)
-  - [skeleton](https://github.com/samarth-robo/ContactPose-ML/tree/skeleton)
   - [mesh](https://github.com/samarth-robo/ContactPose-ML/tree/mesh)
+  - [skeleton](https://github.com/samarth-robo/ContactPose-ML/tree/skeleton)
+  - [relative-joints](https://github.com/samarth-robo/ContactPose-ML/tree/relative-joints)
+  - [simple-joints](https://github.com/samarth-robo/ContactPose-ML/tree/simple-joints)
   - [images](https://github.com/samarth-robo/ContactPose-ML/tree/images)
 
 # Download Links
