@@ -49,7 +49,7 @@ def create_hand_geoms(joint_locs, color, kept_joints=None):
   ls.points = pc.points
   line_ids = get_hand_line_ids()
   ls.lines = o3du.Vector2iVector(line_ids)
-  line_colors = np.zeros((len(line_ids, 3)))
+  line_colors = np.zeros((len(line_ids), 3))
   ls.colors = o3du.Vector3dVector(np.asarray(line_colors))
   geoms.append(ls)
 
