@@ -1,6 +1,6 @@
 # [ContactPose](https://contactpose.cc.gatech.edu)
 
-Code for the **data-driven hand-object contact modeling** experiments presented in the paper:
+[PyTorch](https://pytorch.org) implementation of the **data-driven hand-object contact modeling** experiments presented in the paper:
 
 [ContactPose: A Dataset of Grasps with Object Contact and Hand Pose]() - 
 
@@ -37,6 +37,10 @@ $ cd contactpose-ml
 ```bash
 $ source activate contactpose_ml
 ```
+- Tested on **PyTorch 1.2.0** (as mentioned in `environment.yml`).
+You will probably be able to use later versions, but no guarantees. Please create an issue if you run into problems.
+- Install `pytorch-geometric` [from source code](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html#installation-from-source).
+Pip wheels can unfortunately not be used because of the outdated version of PyTorch.
 - Checkout the appropriate branch for the features used to predict contact:
   - [simple-joints](https://github.com/samarth-robo/ContactPose-ML/tree/simple-joints)
   - [relative-joints](https://github.com/samarth-robo/ContactPose-ML/tree/relative-joints)
@@ -45,8 +49,10 @@ $ source activate contactpose_ml
   - [images](https://github.com/samarth-robo/ContactPose-ML/tree/images)
 
 # Download Links
+These links are provided only for reference, you should not need to download them manually.
+`get_data.py` in each branch will download everything for you.
 
-## Trained Models
+## Trained Models, Training Logs, and `result.json` files
 
 | **Learner**         | **Features**    | **Split**   | **Link** |
 |---------------------|-----------------|-------------|------|
@@ -80,9 +86,10 @@ $ source activate contactpose_ml
 ## Other Data
 
 - [object model voxelizations](https://www.dropbox.com/sh/zyy9jyo6pzat456/AABwO3cR6uVe0bKMXfXn55XQa?dl=1)
+- [3D models of objects](https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1)
 - Pre-computed "prediction data":
-  - [simple-joints](https://www.dropbox.com/s/a6rydh8y0fl85d6/simple_joints_prediction_data.zip?dl=1)
-  - [relative-joints](https://www.dropbox.com/s/2y9h66mctofs1cj/relative_joints_prediction_data.zip?dl=1)
+  - [simple-joints](https://www.dropbox.com/s/a6rydh8y0fl85d6/simple-joints_prediction_data.zip?dl=1)
+  - [relative-joints](https://www.dropbox.com/s/2y9h66mctofs1cj/relative-joints_prediction_data.zip?dl=1)
   - [skeleton](https://www.dropbox.com/s/7xyrafply27efog/skeleton_prediction_data.zip?dl=1)
   - [mesh](https://www.dropbox.com/s/fjfc81203u418pw/mesh_prediction_data.zip?dl=1)
   - [images](https://www.dropbox.com/s/i6j0e9hxdadun9k/images_prediction_data.zip?dl=1)
