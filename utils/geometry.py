@@ -1,5 +1,5 @@
-# uncomment if running from __main__
-# import init_paths
+if __name__ == '__main__':
+  import init_path
 import numpy as np
 import transforms3d.quaternions as txq
 import logging
