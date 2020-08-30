@@ -18,6 +18,4 @@ dependencies:
   - pip:
       - visdom
       - transforms3d
-      - hdbscan
       - chumpy
-      - trimesh[easy]
