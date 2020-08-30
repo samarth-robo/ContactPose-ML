@@ -1,5 +1,5 @@
 from utils import geometry
-from utils.misc import setup_logging
+from utils.misc import setup_logging, load_joint_annotations
 from models.pointnet import PointNetPP
 from models.mlp import MLPModel
 from datasets.contact_pose_3d import ContactPose3D, eval_collate_fn
@@ -43,11 +43,7 @@ def show_prediction(pred, kept_lines, bins, object_name, session_name,
   mesh_filename = osp.join(models_dir, '{:s}.ply'.format(object_name))
   binvox_filename = osp.join(binvoxes_dir,
       '{:s}_hollow.binvox'.format(object_name))
-  annotation_filename = osp.join(contactpose_dir, session_name, object_name,
-      'annotations.json')
-  with open(annotation_filename, 'r') as f:
-    annotations = json.load(f)
-  joint_locs = [annotations['hands'][i]['joints'] for i in range(2)]
+  joint_locs = load_joint_annotations(session_name, object_name)
   geometry.show_prediction(pred, mesh_filename, binvox_filename, joint_locs,
       kept_lines)
 
