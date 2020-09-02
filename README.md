@@ -1,95 +1,81 @@
 # [ContactPose](https://contactpose.cc.gatech.edu)
 
-[PyTorch](https://pytorch.org) implementation of the **data-driven hand-object contact modeling** experiments presented in the paper:
+Hand-object contact modeling with **images** features. Implemented
+in [PyTorch](https://pytorch.org).
 
-[ContactPose: A Dataset of Grasps with Object Contact and Hand Pose]() - 
+## Getting Started
 
-[Samarth Brahmbhatt](https://samarth-robo.github.io/),
-[Chengcheng Tang](https://scholar.google.com/citations?hl=en&user=WbG27wQAAAAJ),
-[Christopher D. Twigg](https://scholar.google.com/citations?hl=en&user=aN-lQ0sAAAAJ),
-[Charles C. Kemp](http://charliekemp.com/), and
-[James Hays](https://www.cc.gatech.edu/~hays/),
-
-**ECCV 2020**.
-
-Please visit [http://contactpose.cc.gatech.edu](http://contactpose.cc.gatech.edu) to explore the dataset.
-
-## Citation
+1. Follow [these steps](https://github.com/samarth-robo/ContactPose-ML/tree/master#getting-started).
+2. If you haven't already, download data from the [ContactPose dataset API](https://github.com/facebookresearch/ContactPose).
+You only need the *grasps data* for these ML experiments.
 ```
-@InProceedings{Brahmbhatt_2020_ECCV,
-author = {Brahmbhatt, Samarth and Tang, Chengcheng and Twigg, Christopher D. and Kemp, Charles C. and Hays, James},
-title = {{ContactPose}: A Dataset of Grasps with Object Contact and Hand Pose},
-booktitle = {The European Conference on Computer Vision (ECCV)},
-month = {August},
-year = {2020}
-}
+$ cd <API_CLONE_DIR>
+$ conda activate contactpose
+$ python scripts/download_data.py --type grasps
 ```
+This will download to `<API_CLONE_DIR>/data/contactpose_data`.
 
-# Getting Started
-
-- Clone this repository
+3. Download the trained PyTorch models and necessary data:
 ```bash
-$ git clone git@github.com:samarth-robo/ContactPose-ML.git contactpose-ml
-$ cd contactpose-ml
+$ python get_data.py --contactpose_data_dir <API_CLONE_DIR>/data/contactpose_data 
 ```
--  Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html). Create the `contactpose_ml` conda environment:
-`conda env create -f environment.yml`. Activate it:
+
+## Inference
+For example, evaluate the 3-view model trained on held out objects,
+and show the result:
 ```bash
-$ source activate contactpose_ml
+$ python eval.py --show_object \
+    --split images_objects \
+    --config configs/images_3view.ini \
+    --checkpoint data/checkpoints/images_split_images_objects_3view/checkpoint_optim_6_train_loss=1.780904.pth
 ```
-- Tested on **PyTorch 1.2.0** (as mentioned in `environment.yml`).
-You will probably be able to use later versions, but no guarantees. Please create an issue if you run into problems.
-- Install `pytorch-geometric` [from source code](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html#installation-from-source).
-Pip wheels can unfortunately not be used because of the outdated version of PyTorch.
-- Checkout the appropriate branch for the features used to predict contact:
-  - [simple-joints](https://github.com/samarth-robo/ContactPose-ML/tree/simple-joints)
-  - [relative-joints](https://github.com/samarth-robo/ContactPose-ML/tree/relative-joints)
-  - [skeleton](https://github.com/samarth-robo/ContactPose-ML/tree/skeleton)
-  - [mesh](https://github.com/samarth-robo/ContactPose-ML/tree/mesh)
-  - [images](https://github.com/samarth-robo/ContactPose-ML/tree/images)
+`--split` can be `images_objects`, `images_participants`, or `overfit` and
+`--checkpoint` is the checkpoint filename relative to the repo root directory.
 
-# Download Links
-These links are provided only for reference, you should not need to download them manually.
-`get_data.py` in each branch will download everything for you.
+![result.png](result.png)
 
-## Trained Models, Training Logs, and `result.json` files
+If you want to check the output for a specific grasp, change `include_sessions`,
+`include_instructions`, and `include_objects` of `split_overfit['test']` in 
+`train_test_splits.py`, and then use `overfit` as the split for `eval.py`.
 
-| **Learner**         | **Features**    | **Split**   | **Link** |
-|---------------------|-----------------|-------------|------|
-| MLP | simple-joints | objects | [link](https://www.dropbox.com/sh/diu3ceafm2d29f7/AAB23ugU_1oWQ1kk6lNAKZyya?dl=1) |
-| MLP | relative-joints | objects | [link](https://www.dropbox.com/sh/ifb37j6h8ni8851/AAA7JLz96cKmZwzTRwI6G9Vza?dl=1)|
-| MLP | skeleton | objects | [link](https://www.dropbox.com/sh/jszbnc5txyp1lny/AABKT8Z9DeHlgZyP7hRxilToa?dl=1) |
-| MLP | mesh | objects | [link](https://www.dropbox.com/sh/4dt5rk8ker3hx56/AABni1Czr6RfQ_6r4pTf18oWa?dl=1) |
-| MLP | simple-joints | participants | [link](https://www.dropbox.com/sh/4im9mm4nluy5vna/AADOGgTwVClXfmLSojhgDfZYa?dl=1) |
-| MLP | relative-joints | participants | [link](https://www.dropbox.com/sh/0ztxdonvdhbftoj/AACJCU3FLQFMo9BINwIc-ZLFa?dl=1) |
-| MLP | skeleton | participants | [link](https://www.dropbox.com/sh/x6wl7pbj64y3zxa/AAASD_pFlaUVtgD6_lLIO2lQa?dl=1) |
-| MLP | mesh | participants | [link](https://www.dropbox.com/sh/z5q92scdcm4vz41/AABH88OJOFzvAG47y5i9HqNva?dl=1) |
-| PointNet++ | simple-joints | objects | [link](https://www.dropbox.com/sh/osq52js7v67f86w/AACiTAWVfiYCo5sqh6LLNLTya?dl=1) |
-| PointNet++ | relative-joints | objects | [link](https://www.dropbox.com/sh/6qzsu7dfrw29qzn/AABbiLDaKGz0g06xe25cuJEza?dl=1) |
-| PointNet++ | skeleton | objects | [link](https://www.dropbox.com/sh/oo2xsjoklnxwfi7/AAB1By9ELXgpcxfxu11zvKFka?dl=1) |
-| PointNet++ | mesh | objects | [link](https://www.dropbox.com/sh/sbskyrjffansvkn/AADIoqzUOv2lh8kzUPzdQkNBa?dl=1) |
-| PointNet++ | simple-joints | participants | [link](https://www.dropbox.com/sh/6p3incblwvf87e8/AAATyVHlddD-sEURHoS8Dn-ya?dl=1) |
-| PointNet++ | relative-joints | participants | [link](https://www.dropbox.com/sh/ejfljimt4dj92tu/AADq-cPe3nFQ5cXXpQHTlO_Wa?dl=1) |
-| PointNet++ | skeleton | participants | [link](https://www.dropbox.com/sh/e6gm4mwsbaqml89/AACPnfzQtL1-YqoMpXkIiA4na?dl=1) |
-| PointNet++ | mesh | participants | [link](https://www.dropbox.com/sh/rx4pge4m6mpsb86/AACtSocTvxOexVl3VFL_p8Xpa?dl=1) |
-| VoxNet | skeleton | objects | [link](https://www.dropbox.com/sh/1ykqz8pddya1zu7/AABXAuwMIaBLncLmq2t_hoRIa?dl=1) |
-| VoxNet | skeleton | participants | [link](https://www.dropbox.com/sh/13mygnw3yu70f5u/AADIGFoV_HNBvoRc_iRGypURa?dl=1) |
-| Heuristic (10 pose params) | - | objects | [link](https://www.dropbox.com/sh/478b5v3gp6euzom/AABt_-24TBlglf3c_mctklwZa?dl=1) |
-| Heuristic (15 pose params) | - | objects | [link](https://www.dropbox.com/sh/8zidjcmxp50cpuu/AAC6Gq4Kx_AwtOREd6Nh5Of_a?dl=1) |
-| Heuristic (10 pose params) | - | participants | [link](https://www.dropbox.com/sh/l1erk9cm3h740st/AADp3MG1-L-PdBH6k11v8fxsa?dl=1) |
-| Heuristic (15 pose params) | - | participants | [link](https://www.dropbox.com/sh/lob3yszezysj6ni/AADKhDrOhtJGNuqRETBhFds8a?dl=1) |
-| enc-dec, PointNet++ | images (3 view) | objects | [link](https://www.dropbox.com/sh/v8gu9ic5ht1f6hj/AAACckYFTRZu-dfJG17ZaVgLa?dl=1) |
-| enc-dec, PointNet++ | images (1 view) | objects | [link](https://www.dropbox.com/sh/lotm1tas810oiip/AABluumM2UccoGcAsJzFsPOma?dl=1) |
-| enc-dec, PointNet++ | images (3 view) | participants | [link](https://www.dropbox.com/sh/arp2ujgj15j0wuk/AACvKquP9-1zhd--199rpHuda?dl=1) |
-| enc-dec, PointNet++ | images (1 view) | participants | [link](https://www.dropbox.com/sh/x2csef9nhnuw231/AAAZS7cWh7OFsBXbEuz4R_maa?dl=1) |
+To re-produce the AuC results from the paper:
+- Evaluate the entire test split:
+```bash
+$ ./eval_script.sh configs/images_3view.ini images_objects \
+    data/checkpoints/images_split_images_objects_3view/checkpoint_optim_6_train_loss=1.780904.pth 0
+```
+This produces pickle files named `predictions_*_runN.pkl` in the same directory
+as the checkpoint. They contain the raw softmax predictions. N in [1, 3]. The
+3 runs can be used to average the effect of random hand pose feature dropout.
+- Run `process_predictions.sh data/checkpoints`. The `exp` variable in that 
+script corresponds to directory names in `data/checkpoints`, so modify that
+according to the names of the experiments you want to process predictions for.
+This runs the "annealed mean", calculates the re-balanced AuC value, statisitics,
+and stores them in `results.json` in the same directory.
 
-## Other Data
+## Training
+For example, train the 1-view model on the `images_participants` split:
 
-- [object model voxelizations](https://www.dropbox.com/sh/zyy9jyo6pzat456/AABwO3cR6uVe0bKMXfXn55XQa?dl=1)
-- [3D models of objects](https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1)
-- Pre-computed "prediction data":
-  - [simple-joints](https://www.dropbox.com/s/a6rydh8y0fl85d6/simple-joints_prediction_data.zip?dl=1)
-  - [relative-joints](https://www.dropbox.com/s/2y9h66mctofs1cj/relative-joints_prediction_data.zip?dl=1)
-  - [skeleton](https://www.dropbox.com/s/7xyrafply27efog/skeleton_prediction_data.zip?dl=1)
-  - [mesh](https://www.dropbox.com/s/fjfc81203u418pw/mesh_prediction_data.zip?dl=1)
-  - [images](https://www.dropbox.com/s/i6j0e9hxdadun9k/images_prediction_data.zip?dl=1)
+(in a separate terminal)
+```bash
+$ conda activate contactpose_ml
+$ visdom env_path=data/checkpoints
+```
+
+(in a separate terminal)
+```bash
+$ conda activate contactpose_ml 
+$ python train_val.py --split images_participants --config configs/images_1view.ini
+```
+As before, you can change `--split` and `--config` to select your split/learner
+architecture combination. The script also has support for visualizing
+progress with `visdom`, logging to a txt file, and resuming optimization
+from a checkpoint.
+
+## Other Scripts
+- `utils/prepare_data.py`: Pre-processes data to be used for training
+(e.g. extract hand pose features). `get_data.py` already downloads the
+pre-processed data used in our experiments in `data/images_prediction_data`.
+- If you need to run `utils/prepare_data.py`, you will need cropped images
+with randomized backgrounds and object mesh vertex visibility/projection
+information. The ContactPose dataset repository will add this code soon.
