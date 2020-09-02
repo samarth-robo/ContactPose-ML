@@ -38,10 +38,10 @@ and show the result:
 $ python eval.py --show_object \
     --split objects \
     --config configs/pointnet.ini \
-    --checkpoint data/pointnet_split_objects_mesh/checkpoint_model_66_train_loss=1.442994.pth
+    --checkpoint data/checkpoints/pointnet_split_objects_mesh/checkpoint_model_66_train_loss=1.442994.pth
 ```
 `--split` can be `objects`, `participants`, or `overfit`,
-`--config` can be `data/mlp.ini`, `data/pointnet.ini`, or `data/voxnet.ini` according
+`--config` can be `data/mlp.ini` or `data/pointnet.ini` according
 to the learner model architecture, and the `--checkpoint` will change accordingly.
 
 ![result.png](result.png)
@@ -57,7 +57,7 @@ To re-produce the AuC results from the paper:
 - Evaluate the entire test split:
 ```bash
 $ ./eval_script.sh configs/pointnet.ini objects \
-    data/pointnet_split_objects_mesh/checkpoint_model_66_train_loss=1.442994.pth 0
+    data/checkpoints/pointnet_split_objects_mesh/checkpoint_model_66_train_loss=1.442994.pth 0
 ```
 This produces pickle files named `predictions_*_runN.pkl` in the same directory
 as the checkpoint. They contain the raw softmax predictions. N in [1, 3]. The
