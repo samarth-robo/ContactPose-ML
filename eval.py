@@ -179,7 +179,7 @@ def eval(data_dir, contactpose_dir, split, checkpoint_filename, config_filename,
 
     if show_object is True:
       if 'images' in model_name:
-        # kept_lines = [None, None]
+        kept_lines = [None, None]
         # ims = batch[0][0, ...].cpu().numpy()
         # ims = np.transpose(ims, (0, 2, 3, 1))
         # plt.ion()
