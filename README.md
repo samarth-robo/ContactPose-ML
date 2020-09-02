@@ -14,6 +14,9 @@
 
 Please visit [http://contactpose.cc.gatech.edu](http://contactpose.cc.gatech.edu) to explore the dataset.
 
+**Note**: This is the ML code for the ECCV 2020 paper. The ContactPose
+dataset API is [here](https://github.com/facebookresearch/ContactPose).
+
 ## Citation
 ```
 @InProceedings{Brahmbhatt_2020_ECCV,
