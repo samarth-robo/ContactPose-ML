@@ -3,6 +3,9 @@
 Hand-object contact modeling with **mesh** features. Implemented
 in [PyTorch](https://pytorch.org).
 
+**Note**: This is the ML code for the ECCV 2020 paper. The ContactPose
+dataset API is [here](https://github.com/facebookresearch/ContactPose).
+
 ## Getting Started
 
 1. Follow [these steps](https://github.com/samarth-robo/ContactPose-ML/tree/master#getting-started).
