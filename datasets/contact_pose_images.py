@@ -116,7 +116,6 @@ class ContactPoseImages(Dataset):
         all_depth_filenames = []
         all_vert_filenames  = []
         for frame_idx in range(self.n_video_frames):
-          add = True
           rgb_filenames = []
           depth_filenames = []
           vert_filenames = []
@@ -127,18 +126,22 @@ class ContactPoseImages(Dataset):
                 'frame{:03d}.png'.format(frame_idx))
             pfilename = osp.join(images_dir, camera_name, 'projections',
                 'frame{:03d}_verts.npy'.format(frame_idx))
-            if osp.isfile(rfilename) and osp.isfile(dfilename) and \
-                osp.isfile(pfilename):
+            if osp.isfile(rfilename) and osp.isfile(pfilename):
+              if self.use_depth and not osp.isfile(dfilename):
+                continue
               rgb_filenames.append(rfilename)
               depth_filenames.append(dfilename)
               vert_filenames.append(pfilename)
           N = len(rgb_filenames)
           if N == 0:
+            self.logger.info('No RGB images for {:s} {:s}, skipping'.
+                             format(session_name, object_name))
             continue
           elif N < self.n_views:
             # duplicate
             rgb_filenames   = [rgb_filenames[i%N]   for i in range(self.n_views)]
-            depth_filenames = [depth_filenames[i%N] for i in range(self.n_views)]
+            if self.use_depth:
+              depth_filenames = [depth_filenames[i%N] for i in range(self.n_views)]
             vert_filenames  = [vert_filenames[i%N]  for i in range(self.n_views)]
           all_rgb_filenames.append(rgb_filenames)
           all_depth_filenames.append(depth_filenames)
