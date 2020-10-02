@@ -121,7 +121,7 @@ class ContactPoseImages(Dataset):
           depth_filenames = []
           vert_filenames = []
           for camera_name in self.used_cameras:
-            rfilename = osp.join(images_dir, camera_name, 'masked_color',
+            rfilename = osp.join(images_dir, camera_name, 'color',
                 'frame{:03d}.png'.format(frame_idx))
             dfilename = osp.join(images_dir, camera_name, 'depth',
                 'frame{:03d}.png'.format(frame_idx))
