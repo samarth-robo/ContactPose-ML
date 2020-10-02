@@ -79,6 +79,14 @@ from a checkpoint.
 - `utils/prepare_data.py`: Pre-processes data to be used for training
 (e.g. extract hand pose features). `get_data.py` already downloads the
 pre-processed data used in our experiments in `data/images_prediction_data`.
+
 - If you need to run `utils/prepare_data.py`, you will need cropped images
 with randomized backgrounds and object mesh vertex visibility/projection
-information. The ContactPose dataset repository will add this code soon.
+information. This code is available in the
+[ContactPose API](https://github.com/facebookresearch/ContactPose/blob/master/docs/doc.md#image-preprocessing).
+
+- `utils/calc_contact_bin_weights.py`: Calculates the loss weights for contact
+prediction (See "Contact Representation" in Section 5 of
+[the paper](https://arxiv.org/abs/2007.09545)). We already provide the weights
+used in our experiments in `data/texture_bin_weights.npy`, but you can use this
+script to calculate it for your own data.
