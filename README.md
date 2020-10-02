@@ -33,11 +33,11 @@ The above commands do this for all objects grasped by participant #28 with the `
 can specify a directory (e.g. separate SSD location) where the images will be downloaded, with the
 `--images_dload_dir` option in `scripts/download_data.py`. Both downloading and preprocessing is time consuming,
 so some suggestions:
-    
-    - Do at least the preprocessing in parallel
-    
-    - Delete the large original images in 
-    `<API_CLONE_DIR>/full<p_num>_<intent>/<object_name>/images_full` afterwards
+
+- Do at least the preprocessing in parallel
+
+- Delete the large original images in
+`<API_CLONE_DIR>/full<p_num>_<intent>/<object_name>/images_full` afterwards
 
 Ultimately, you need to do this process for both `use` and `handoff` intents and following participants:
 `5, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 35, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50`
