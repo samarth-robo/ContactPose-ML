@@ -114,51 +114,7 @@ def prepare_surface_data(object_name, config, data_dir, binvoxes_dir, output_dir
   if debug_mode:
     geometry.draw_geometries_with_colormap([geometry.create_pc(xyz, colors)])
 
-  # read hand joints
-  hand_joints = []
-  valid_hands = []
-  json_filename = osp.join(data_dir, 'annotations.json')
-  try:
-    with open(json_filename, 'r') as f:
-      annotations = json.load(f)
-  except FileNotFoundError as e:
-    logger.warning(e)
-    return float('inf')
-  annotations = annotations['hands']
-  for hand in annotations:
-    valid_hands.append(hand['valid'])
-    hand_joints.append(hand['joints'])
-  hand_joints = np.asarray(hand_joints)
-
-  # find closest valid hand
-  dists = []
-  for this_hand_joints, valid in zip(hand_joints, valid_hands):
-    if not valid:
-      dists.append(max_joint_dist *
-                   np.ones((len(xyz), len(this_hand_joints))) + 1)
-    else:
-      vectors = this_hand_joints[np.newaxis, :, :] - xyz[:, np.newaxis, :]
-      dists.append(np.linalg.norm(vectors, axis=2))
-  dists = np.hstack(dists)
-  hand_idx = np.argmin(dists, axis=1)
-  hand_idx = (hand_idx >= dists.shape[1]//2).astype(np.int)
-
-  # surface features = vectors to closest point on each hand line segment
-  hand_line_ids = geometry.get_hand_line_ids()
-  vectors = np.zeros((len(xyz), len(hand_line_ids)*3))
-  for i in range(2):
-    idx = hand_idx == i
-    if np.sum(idx) == 0:
-      continue
-    l0 = hand_joints[i][hand_line_ids[:, 0]]
-    l1 = hand_joints[i][hand_line_ids[:, 1]]
-    p  = xyz[idx]
-    pl = geometry.closest_linesegment_point(l0, l1, p)
-    v  = pl - p[:, np.newaxis, :]
-    v  = np.reshape(v, (len(p), -1))
-    vectors[idx, :] = v
-
-  data = np.hstack((colors[:, np.newaxis], hand_idx[:, np.newaxis], vectors))
+  data = colors[:, np.newaxis]
   filename = osp.join(
       output_dir, '{:s}_voxel_surface_data.npy'.format(object_name))
   np.save(filename, data)
