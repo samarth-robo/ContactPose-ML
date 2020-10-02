@@ -9,8 +9,7 @@ dataset API is [here](https://github.com/facebookresearch/ContactPose).
 ## Getting Started
 
 1. Follow [these steps](https://github.com/samarth-robo/ContactPose-ML/tree/master#getting-started).
-2. If you haven't already, download data from the [ContactPose dataset API](https://github.com/facebookresearch/ContactPose).
-You only need the *grasps data* for these ML experiments.
+2. If you haven't already, download grasps data from the [ContactPose dataset API](https://github.com/facebookresearch/ContactPose).
 ```
 $ cd <API_CLONE_DIR>
 $ conda activate contactpose
@@ -22,6 +21,24 @@ This will download to `<API_CLONE_DIR>/data/contactpose_data`.
 ```bash
 $ python get_data.py --contactpose_data_dir <API_CLONE_DIR>/data/contactpose_data 
 ```
+
+4. Download and pre-process images:
+```bash
+$ cd <API_CLONE_DIR>
+$ conda activate contactpose
+$ python scripts/download_data.py --type images --p_num 28 --intent use
+$ python scripts/preprocess_images.py --p_num 28 --intent use --background_images_dir <path-to-coco-images>
+```
+The above commands do this for all objects grasped by participant #28 with the `use` intent. You
+can specify a directory (e.g. separate SSD location) where the images will be downloaded, with the
+`--images_dload_dir` option in `scripts/download_data.py`. Both downloading and preprocessing is time consuming,
+so some suggestions:
+    - Do at least the preprocessing in parallel
+    - Delete the large original images in 
+    `<API_CLONE_DIR>/full<p_num>_<intent>/<object_name>/images_full` afterwards
+Ultimately, you need to do this process for both `use` and `handoff` intents and following participants:
+`5, 15, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 35, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50`
+(taken from `split_images_objects` and `split_images_participants` in `train_test_splits.py`.
 
 ## Inference
 For example, evaluate the 3-view model trained on held out objects,
